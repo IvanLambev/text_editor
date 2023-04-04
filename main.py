@@ -15,6 +15,23 @@ menu = tkinter.Menu(root)
 root.config(menu=menu)
 
 #logic part
+def check_shortcuts(event):
+    # Check if the Ctrl and S keys are both pressed
+    if event.state == 0x4 and event.keysym == 's':
+
+        save_file()
+    # Check if the Ctrl and O keys are both pressed
+    if event.state == 0x4 and event.keysym == 'o':
+        open_file()
+
+    # Check if the Ctrl and N keys are both pressed
+    if event.state == 0x4 and event.keysym == 'n':
+        new_file()
+
+    # Check if the Ctrl and Q keys are both pressed
+    if event.state == 0x4 and event.keysym == 'q':
+        root.quit()
+
 
 def new_file():
     # delete the current text
@@ -96,7 +113,7 @@ text = tkinter.Text(root, width=600, height=400)
 text.pack()
 
 
-
+root.bind('<Key>', check_shortcuts)
 
 
 ## run the main loop
