@@ -10,9 +10,12 @@ root = tkinter.Tk()
 root.title("Text Editor")
 root.geometry("600x400")
 
+
+
 ## create the menu
 menu = tkinter.Menu(root)
 root.config(menu=menu)
+
 
 #logic part
 def check_shortcuts(event):
@@ -105,12 +108,53 @@ edit_menu.add_command(label="Cut", command=cut)
 edit_menu.add_command(label="Copy", command=copy)
 edit_menu.add_command(label="Paste", command=paste)
 
+##Create the preference menu
+preference_menu = tkinter.Menu(menu)
+menu.add_cascade(label="Preference", menu=preference_menu)
+
+preference_menu.add_command(label="Color")
+
+##Create popup to select font
+font_menu = tkinter.Menu(preference_menu)
+preference_menu.add_cascade(label="Font", menu=font_menu)
+font_menu.add_command(label="Arial", command= lambda: text.configure(font=("Arial", 12)))
+font_menu.add_command(label="Times New Roman", command= lambda: text.configure(font=("Times New Roman", 12)))
+font_menu.add_command(label="Courier New", command= lambda: text.configure(font=("Courier New", 12)))
+
+##Create popup to select font size
+font_size_menu = tkinter.Menu(preference_menu)
+preference_menu.add_cascade(label="Font Size", menu=font_size_menu)
+font_size_menu.add_command(label="10", command= lambda: text.configure(font=("Arial", 10)))
+font_size_menu.add_command(label="12", command= lambda: text.configure(font=("Arial", 12)))
+font_size_menu.add_command(label="14", command= lambda: text.configure(font=("Arial", 14)))
+font_size_menu.add_command(label="16", command= lambda: text.configure(font=("Arial", 16)))
+font_size_menu.add_command(label="18", command= lambda: text.configure(font=("Arial", 18)))
+font_size_menu.add_command(label="20", command= lambda: text.configure(font=("Arial", 20)))
+
+##Create popup to select font color
+font_color_menu = tkinter.Menu(preference_menu)
+preference_menu.add_cascade(label="Theme", menu=font_color_menu)
+font_color_menu.add_command(label="Black", command= lambda: text.configure(background='black', foreground='white'))
+font_color_menu.add_command(label="White", command= lambda: text.configure(background='white', foreground='black'))
 
 
 
 ## create the text widget
 text = tkinter.Text(root, width=600, height=400)
+
 text.pack()
+
+##Create the status bar at the bottom of the window to display the number of characters and lines
+
+status_bar = tkinter.Label(root, text="Line: 1 | Column: 1", bd=1, relief=tkinter.SUNKEN, anchor=tkinter.W)
+status_bar.pack(side=tkinter.BOTTOM, fill=tkinter.X)
+
+def update_status_bar(event):
+    line, column = event.widget.index(tkinter.INSERT).split('.')
+    status_bar.config(text="Line: {} | Column: {}".format(line, column))
+
+text.bind('<KeyRelease>', update_status_bar)
+
 
 
 root.bind('<Key>', check_shortcuts)
